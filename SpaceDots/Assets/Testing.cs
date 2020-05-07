@@ -1,32 +1,52 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Unity.Collections;
+﻿using Unity.Collections;
 using Unity.Entities;
+using Unity.Mathematics;
+using Unity.Rendering;
 using Unity.Transforms;
 using UnityEngine;
 
-public class Testing : MonoBehaviour
+namespace Assets.Scripts
 {
-    // Start is called before the first frame update
-    void Start()
+    public class Testing : MonoBehaviour
     {
-        var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
+        [SerializeField] private Mesh _mesh;
+        [SerializeField] private Material _material;
 
-        var entityArchetype = entityManager.CreateArchetype(
-            // typeof(LevelComponent),
-            typeof(Translation),
-            // typeof(RenderMesh),
-            typeof(LocalToWorld)
-            // typeof(RenderBounds)
-        );
-        var entityArray = new NativeArray<Entity>(1, Allocator.Temp);
+        private void Start()
+        {
+            var entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
 
-        entityManager.CreateEntity(entityArchetype, entityArray);
+            var entityArchetype = entityManager.CreateArchetype(
+                typeof(Translation),
+                typeof(RenderMesh),
+                typeof(LocalToWorld),
+                typeof(RenderBounds)
+            );
+            var entityArray = new NativeArray<Entity>(10000, Allocator.Temp);
+
+            entityManager.CreateEntity(entityArchetype, entityArray);
+
+            for (var i = 0; i < entityArray.Length; i++)
+            {
+                var entity = entityArray[i];
+
+                entityManager.SetComponentData(entity, new Translation { Value = new float3(UnityEngine.Random.Range(-100, 100), UnityEngine.Random.Range(-100, 100), UnityEngine.Random.Range(-100, 100)) });
+                entityManager.SetSharedComponentData(entity, new RenderMesh
+                {
+                    mesh = _mesh,
+                    material = _material
+                });
+            }
+
+
+            entityArray.Dispose();
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
