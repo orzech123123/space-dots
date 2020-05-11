@@ -1,4 +1,5 @@
-﻿using Unity.Collections;
+﻿using Unity.Burst;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
 using Unity.Mathematics;
@@ -8,13 +9,14 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
+    [BurstCompile]
     public class AsteroidsRotateSystem : ComponentSystem
     {
         protected override void OnUpdate()
         {
             Entities.ForEach((ref Rotation rotation, ref AsteroidMoveComponent asteroidMoveComponent) =>
             {
-                rotation.Value = math.mul(rotation.Value, quaternion.RotateX(asteroidMoveComponent.RotationSpeed * Time.DeltaTime));
+                rotation.Value = Quaternion.AngleAxis(asteroidMoveComponent.RotationSpeed * (float)Time.ElapsedTime * 100, new Vector3(asteroidMoveComponent.RotationSpeed, asteroidMoveComponent.RotationSpeed, asteroidMoveComponent.RotationSpeed));
             });
         }
     }

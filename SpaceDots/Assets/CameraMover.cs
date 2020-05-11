@@ -16,6 +16,10 @@ public class CameraMover : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             transform.position += transform.forward * Time.deltaTime * 10f;
+
+            var currentEulerAngles = transform.eulerAngles;
+            currentEulerAngles += transform.up * Time.deltaTime * 5f;
+            transform.eulerAngles = currentEulerAngles;
         }
     }
 }

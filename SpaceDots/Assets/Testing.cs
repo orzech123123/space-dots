@@ -33,8 +33,8 @@ namespace Assets.Scripts
                 var entity = entityArray[i];
 
                 entityManager.SetComponentData(entity, new Translation { Value = new float3(UnityEngine.Random.Range(-100, 100), UnityEngine.Random.Range(-100, 100), UnityEngine.Random.Range(-100, 100)) });
-                entityManager.SetComponentData(entity, new Rotation { Value = math.mul(quaternion.identity, quaternion.RotateX(UnityEngine.Random.Range(-180, 180))) });
-                entityManager.SetComponentData(entity, new AsteroidMoveComponent { RotationSpeed = UnityEngine.Random.Range(-0.5f, 0.5f) });
+                // entityManager.SetComponentData(entity, new Rotation { Value = math.mul(quaternion.identity, quaternion.RotateX(UnityEngine.Random.Range(-180, 180))) });
+                entityManager.SetComponentData(entity, new AsteroidMoveComponent { RotationSpeed = UnityEngine.Random.Range(-1.0f, 1.0f) });
                 entityManager.SetSharedComponentData(entity, new RenderMesh
                 {
                     mesh = _mesh,
